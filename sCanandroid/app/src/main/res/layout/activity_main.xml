@@ -26,6 +26,7 @@
         android:layout_height="40dp"
         android:hint="Enter Your Name"
         android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:id="@+id/username"/>
 
     <Space

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +12,7 @@
     android:weightSum="10"
     android:background="@drawable/homebackground"
     tools:context="com.example.scan.scan.homepage">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +23,8 @@
             android:layout_height="match_parent"
             android:textAlignment="center"
             android:textSize="35dp"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="30dp"/>
+            android:textColor="#FFFFFF">
+        </TextView>
     </LinearLayout>
 
     <LinearLayout
@@ -57,7 +59,6 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_marginTop="10dp"
             android:layout_weight="2"
             android:id="@+id/pdflibrarybutton"
             android:background="@drawable/pdflibrary"/>
@@ -65,12 +66,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="170dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
             android:layout_weight="2"
             android:id="@+id/doclibrarybutton"
             android:background="@drawable/doclibrary"/>
     </LinearLayout>
 </LinearLayout>
-
