@@ -21,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn = (Button) findViewById(R.id.signinbutton);
         final Context context = this;
+
+        /*
+        On click of button, app saves user name and when the app is reopened,
+        it automatically displays the name in the text edit. The button is linked to the home page.
+        Data of user name is saved using SharedPreferences.
+        */
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         EditText name = (EditText) findViewById(R.id.username);
         String entered = preferences.getString(KEY, "qwuidfghj");
-        if(entered.equals("qwuidfghj")){
+        if(entered.equals("qwuidfghj")){ //user is opening the app for the first time
 
         }
         else{

@@ -27,6 +27,7 @@
         android:hint="Enter Your Name"
         android:textColorHint="#FFFFFF"
         android:textColor="#FFFFFF"
+        android:maxLines="1"
         android:id="@+id/username"/>
 
     <Space
