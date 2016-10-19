@@ -67,15 +67,23 @@ public class homepage extends AppCompatActivity {
     @Override  //NOTICE PREPROCESSING TEAM! The image can be passed on for preprocessing with this method as a mit map.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) { //method receives the image clicked by camera and passes it on.
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) { //IF PHOTO IS TAKEN USING CAMERA
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
+            //PRE PROCESSING TEAM ENTRY
+            imageBitmap = PreProcessing.toBlackWhite(imageBitmap); // converts the image from colour to balck white so its easier to detect
+                                                                   // corners and text.
+            imageBitmap = PreProcessing.correctSpin(imageBitmap,PreProcessing.getCorners(imageBitmap)); // corrects the alignment of the image.
+            //END OF PRE PROCESSING
 
-            /*  PRE PROCESSING TEAM
-            take the bitmap named "imageBitmap" into a function as a parameter. Define the function anywhere on this java
-            page as a public method. The method should take the bitmap and process it and return a bitmap. Return the processed
-            bitmap to the OCR team for further processing. currently the app temporarily displays the image in a new activity.
+
+            /*  OCR TEAM
+            take the bitmap named "imageBitmap" from here. This is what you want.
+            I have created another activity to display your string. We will link the string you return
+            to that activity on Saturday. Below is the code to display the processed image on a new activity
+            just for testing if pre processing is working. Will remove it on Saturday.
+            If preprocessing methods are not working then remove them.
             */
 
 
@@ -88,12 +96,16 @@ public class homepage extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){ //if picture is taken from Library, method passes it on
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){ //IF PICTURE IS TAKEN FROM PHOTO LIBRARY
             Uri imageUri = data.getData();
 
-            /*  PRE PROCESSING TEAM
-            First convert the Uri into bitmap and pass it on to the same function which you used above for processing. Process it.
-            return the bitmap to the OCR team for further processing. currently the app temporarily displays the image in a new activity.
+            /*  OCR TEAM
+            First convert the Uri into bitmap and pass it on to the same function which you used above for preprocessing. Process it.
+            return the bitmap to the OCR team for further processing into string.
+            I have created another activity to display your string. We will link the string you return
+            to that activity on Saturday. Below is the code to display the processed image on a new activity
+            just for testing if pre processing is working. Will remove it on Saturday.
+            If pre processing methods are not working then remove them.
             */
 
             Intent intent = new Intent(this, displayimage.class);
