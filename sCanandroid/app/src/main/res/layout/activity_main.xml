@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:hint="Enter Your Name"
-        android:textColorHint="#FFFFFF"
+        android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:maxLines="1"
+        android:singleLine="true"
         android:id="@+id/username"/>
-
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="20dp"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

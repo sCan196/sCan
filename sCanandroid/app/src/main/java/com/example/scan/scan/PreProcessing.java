@@ -10,6 +10,14 @@ import android.graphics.Bitmap;
 public class PreProcessing {
 
     /**
+     * @param bmp the bitmap to clone
+     * @return a new, mutable copy of the bitmap
+     */
+    public static Bitmap cloneToMute(Bitmap bmp) {
+        return bmp.copy(bmp.getConfig(), true);
+    }
+
+    /**
      * @param bmp the bitmap (in color) that will be converted into B/W
      * @return Bitmap the converted, B/W only, image
      */
@@ -25,8 +33,8 @@ public class PreProcessing {
                 int green = (pixel & 0x00FF00) << 8;
                 int blue = (pixel & 0x0000FF);
 
-                // 600 is chosen basically at random and can be tweaked later
-                if (red + green + blue > 600) {
+                // arbitrary thresholds are fun
+                if (red + green + blue > (128 * 3)) {
                     bmp.setPixel(j, i, 0xFFFFFFFF);
                 } else {
                     bmp.setPixel(j, i, 0xFF000000);
