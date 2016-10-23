@@ -78,74 +78,52 @@ public class homepage extends AppCompatActivity {
 
         if (resultCode != RESULT_OK) return; // this should never happen
 
+        Bitmap imageBitmap = null;
+
         // IF PHOTO IS TAKEN USING CAMERA
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            // PRE PROCESSING TEAM ENTRY
-            imageBitmap = PreProcessing.cloneToMute(imageBitmap);
-            // DON'T TOUCH ANYTHING HERE!!!!
-            // END OF PRE PROCESSING
-
-            /*
-            OCR TEAM
-            take the bitmap named "imageBitmap" from here. This is what you want.
-            I have created another activity to display your string. Below is the code to display
-            the processed image on a new activity
-            just for testing if pre processing is working. Will remove it on Saturday.
-            If preprocessing methods are not working then remove them.
-            */
-
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            Intent intent = new Intent(this, displayimage.class);
-            intent.putExtra("picture", byteArray);
-            startActivity(intent);
+            imageBitmap = (Bitmap) extras.get("data");
         }
 
         // IF PICTURE IS TAKEN FROM PHOTO LIBRARY
         if (requestCode == PICK_IMAGE){
             Uri imageUri = data.getData();
-            Bitmap imageBitmap = null;
+
             try {
                 imageBitmap = decodeUri(imageUri);
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) { // this should never happen
                 e.printStackTrace();
+                return;
             }
+        }
 
+        assert imageBitmap != null; // this should never happen
 
-            //PRE PROCESSING TEAM ENTRY
-            //imageBitmap = PreProcessing.toBlackWhite(imageBitmap); // converts the image from colour to balck white so its easier to detect
-            // corners and text.
-            //imageBitmap = PreProcessing.correctSpin(imageBitmap,PreProcessing.getCorners(imageBitmap)); // corrects the alignment of the image.
-            //END OF PRE PROCESSING
+        // PREPROCESSING STUFF GOES HERE
+        // for encapsulation
+        imageBitmap = PreProcessing.doStuff(imageBitmap);
 
-
-            /* OCR TEAM
-            First convert the URI into bitmap and pass it on to the same function which you used above for preprocessing.
+        // OCR STUFF GOES HERE
+        /* OCR TEAM
             return the bitmap to the OCR team for further processing into string.
             I have created another activity to display your string. We will link the string you return
             to that activity on Saturday. Below is the code to display the processed image on a new activity
             I have created another activity to display your string. Below is the code to display the processed image on a new activity
             just for testing if pre processing is working. Will remove it on Saturday.
             If pre processing methods are not working then remove them.
-            */
+        */
 
+        // just getting a pre-processed image onto the screen
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        Intent intent = new Intent(this, DisplayImage.class);
+        intent.putExtra("picture", byteArray);
+        startActivity(intent);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            Intent intent = new Intent(this, displayimage.class);
-            intent.putExtra("picture", byteArray);
-            startActivity(intent);
-
-        }
+        // text view stuff
     }
-
-
-
 
     //Method to Decode URI to Bitmap
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {

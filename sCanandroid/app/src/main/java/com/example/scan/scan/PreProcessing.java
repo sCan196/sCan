@@ -11,6 +11,13 @@ import android.graphics.Bitmap;
 public class PreProcessing {
 
     /**
+     * encapsulation
+     */
+    public static Bitmap doStuff(Bitmap in) {
+        return in;
+    }
+
+    /**
      * @param bmp the bitmap to clone
      * @return a new, mutable copy of the bitmap
      */
