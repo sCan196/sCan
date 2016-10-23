@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".homepage" />
-        <activity android:name=".displayimage" />
+        <activity android:name=".DisplayImage" />
         <activity android:name=".DisplayText"></activity>
     </application>
 
