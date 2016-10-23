@@ -2,15 +2,19 @@ package com.example.scan.scan;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class homepage extends AppCompatActivity {
     Button btnscan;
@@ -72,16 +76,16 @@ public class homepage extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             //PRE PROCESSING TEAM ENTRY
-            imageBitmap = PreProcessing.toBlackWhite(imageBitmap); // converts the image from colour to balck white so its easier to detect
+            //imageBitmap = PreProcessing.toBlackWhite(imageBitmap); // converts the image from colour to balck white so its easier to detect
                                                                    // corners and text.
-            imageBitmap = PreProcessing.correctSpin(imageBitmap,PreProcessing.getCorners(imageBitmap)); // corrects the alignment of the image.
+            //imageBitmap = PreProcessing.correctSpin(imageBitmap,PreProcessing.getCorners(imageBitmap)); // corrects the alignment of the image.
             //END OF PRE PROCESSING
 
 
             /*  OCR TEAM
             take the bitmap named "imageBitmap" from here. This is what you want.
-            I have created another activity to display your string. We will link the string you return
-            to that activity on Saturday. Below is the code to display the processed image on a new activity
+            I have created another activity to display your string. Below is the code to display
+            the processed image on a new activity
             just for testing if pre processing is working. Will remove it on Saturday.
             If preprocessing methods are not working then remove them.
             */
@@ -92,26 +96,74 @@ public class homepage extends AppCompatActivity {
             byte[] byteArray = stream.toByteArray();
             Intent intent = new Intent(this, displayimage.class);
             intent.putExtra("picture", byteArray);
-            intent.putExtra("source", "cam");
             startActivity(intent);
         }
 
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){ //IF PICTURE IS TAKEN FROM PHOTO LIBRARY
             Uri imageUri = data.getData();
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = decodeUri(imageUri);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+            //PRE PROCESSING TEAM ENTRY
+            //imageBitmap = PreProcessing.toBlackWhite(imageBitmap); // converts the image from colour to balck white so its easier to detect
+            // corners and text.
+            //imageBitmap = PreProcessing.correctSpin(imageBitmap,PreProcessing.getCorners(imageBitmap)); // corrects the alignment of the image.
+            //END OF PRE PROCESSING
+
 
             /*  OCR TEAM
-            First convert the Uri into bitmap and pass it on to the same function which you used above for preprocessing. Process it.
-            return the bitmap to the OCR team for further processing into string.
-            I have created another activity to display your string. We will link the string you return
-            to that activity on Saturday. Below is the code to display the processed image on a new activity
+            I have created another activity to display your string. Below is the code to display the processed image on a new activity
             just for testing if pre processing is working. Will remove it on Saturday.
             If pre processing methods are not working then remove them.
             */
 
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
             Intent intent = new Intent(this, displayimage.class);
-            intent.putExtra("pictureURI", imageUri.toString());
-            intent.putExtra("source", "lib");
+            intent.putExtra("picture", byteArray);
             startActivity(intent);
+
         }
+    }
+
+
+
+
+    //Method to Decode URI to Bitmap
+    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
+
+        // Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
+
+        // The new size we want to scale to
+        final int REQUIRED_SIZE = 140;
+
+        // Find the correct scale value. It should be the power of 2.
+        int width_tmp = o.outWidth, height_tmp = o.outHeight;
+        int scale = 1;
+        while (true) {
+            if (width_tmp / 2 < REQUIRED_SIZE
+                    || height_tmp / 2 < REQUIRED_SIZE) {
+                break;
+            }
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+
     }
 }
