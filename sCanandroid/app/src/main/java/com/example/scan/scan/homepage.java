@@ -32,10 +32,10 @@ public class homepage extends AppCompatActivity {
         s = s.trim();
 
         /* this shouldn't be needed now
-        if (s.indexOf("\n" >= 0)
+        if (s.contains("\n"))
             s = s.substring(0, s.indexOf("\n");
          */
-        if (s.indexOf(" ") >= 0)
+        if (s.contains(" "))
             s = s.substring(0,s.indexOf(" ")); // trim to first name
 
 
@@ -75,7 +75,11 @@ public class homepage extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) { //IF PHOTO IS TAKEN USING CAMERA
+
+        if (resultCode != RESULT_OK) return; // this should never happen
+
+        // IF PHOTO IS TAKEN USING CAMERA
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
@@ -83,7 +87,6 @@ public class homepage extends AppCompatActivity {
             imageBitmap = PreProcessing.cloneToMute(imageBitmap);
             // DON'T TOUCH ANYTHING HERE!!!!
             // END OF PRE PROCESSING
-
 
             /*
             OCR TEAM
@@ -102,7 +105,8 @@ public class homepage extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){ //IF PICTURE IS TAKEN FROM PHOTO LIBRARY
+        // IF PICTURE IS TAKEN FROM PHOTO LIBRARY
+        if (requestCode == PICK_IMAGE){
             Uri imageUri = data.getData();
             Bitmap imageBitmap = null;
             try {
@@ -119,7 +123,7 @@ public class homepage extends AppCompatActivity {
             //END OF PRE PROCESSING
 
 
-            /*  OCR TEAM
+            /* OCR TEAM
             First convert the URI into bitmap and pass it on to the same function which you used above for preprocessing.
             return the bitmap to the OCR team for further processing into string.
             I have created another activity to display your string. We will link the string you return
