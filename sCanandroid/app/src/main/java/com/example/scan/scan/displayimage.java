@@ -22,17 +22,10 @@ public class displayimage extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.displayImage);
         Intent intent = this.getIntent();
         String source = intent.getExtras().getString("source");
-        //if picture taken from photo library
-        if(source.equals("lib")) {
-            Uri picture = Uri.parse(getIntent().getExtras().getString("pictureURI"));
-            image.setImageURI(picture);
-        }
-        //if photo clicked from camera
-        if(source.equals("cam")) {
-            Bundle extras = getIntent().getExtras();
-            byte[] byteArray = extras.getByteArray("picture");
-            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            image.setImageBitmap(bmp);
-        }
+        Bundle extras = getIntent().getExtras();
+        byte[] byteArray = extras.getByteArray("picture");
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        image.setImageBitmap(bmp);
+
     }
 }
