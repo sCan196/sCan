@@ -18,9 +18,9 @@
         android:textAlignment="center"/>
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="450dp"
+        android:text="THIS SHOULD NEVER APPEAR!!!!!!"
         android:id="@+id/textDisplay"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
