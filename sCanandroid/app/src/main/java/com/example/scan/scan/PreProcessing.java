@@ -4,6 +4,7 @@ package com.example.scan.scan;
 import android.graphics.Bitmap;
 
 /**
+ * SHUT UP ANDROID STUDIO
  * Created by Kyle & friends on 10/9/16.
  */
 
@@ -18,34 +19,66 @@ public class PreProcessing {
     }
 
     /**
-     * @param bmp the bitmap (in color) that will be converted into B/W
-     * @return Bitmap the converted, B/W only, image
+     * @param pixel packed RRGGBB pixel
+     * @return int[] {red, green, blue}
      */
-    public static Bitmap toBlackWhite(Bitmap bmp) {
+    private static int[] unpackRGB(int pixel) {
+        int red = (pixel & 0xFF0000) << 16;
+        int green = (pixel & 0x00FF00) << 8;
+        int blue = (pixel & 0x0000FF);
+        return new int[] {red, green, blue};
+    }
+
+    /**
+     * taken from Wikipedia...
+     */
+    private static int RGBtoGray(int r, int g, int b) {
+        return Math.round(r * 0.2126f + g * 0.7152f + b * 0.0722f);
+    }
+
+    /**
+     * in-place to-grayscale
+     * @param bmp input bitmap
+     * @return the same bitmap, but modified into grayscale
+     */
+    public static Bitmap toGrayscale(Bitmap bmp) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
 
         for (int i = 0; i < height; i++) {
-
             for (int j = 0; j < width; j++) {
-                int pixel = bmp.getPixel(j, i);
-                int red = (pixel & 0xFF0000) << 16;
-                int green = (pixel & 0x00FF00) << 8;
-                int blue = (pixel & 0x0000FF);
-
-                // arbitrary thresholds are fun
-                if (red + green + blue > (128 * 3)) {
-                    bmp.setPixel(j, i, 0xFFFFFFFF);
-                } else {
-                    bmp.setPixel(j, i, 0xFF000000);
-                }
-
+                int[] prgb = unpackRGB(bmp.getPixel(j, i));
+                int conv = RGBtoGray(prgb[0], prgb[1], prgb[2]);
+                bmp.setPixel(j, i, conv * 0x010101);
             }
-
         }
 
-
         return bmp;
+    }
+
+    /**
+     * Returns an image histogram.
+     * @param bmp the image to analyze
+     * @return an int[][] object, with one int[] for each of R, G, B
+     */
+    public static int[][] getHistogram(Bitmap bmp) {
+        int height = bmp.getHeight();
+        int width = bmp.getWidth();
+
+        int[] histR = new int[256];
+        int[] histG = new int[256];
+        int[] histB = new int[256];
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int[] prgb = unpackRGB(bmp.getPixel(j, i));
+                histR[prgb[0]] += 1;
+                histG[prgb[1]] += 1;
+                histB[prgb[2]] += 1;
+            }
+        }
+
+        return new int[][] {histR, histG, histB};
     }
 
     /**
