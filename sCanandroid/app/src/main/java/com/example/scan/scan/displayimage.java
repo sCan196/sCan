@@ -36,5 +36,10 @@ public class displayimage extends AppCompatActivity {
             Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             image.setImageBitmap(bmp);
         }
+
+        Bundle extras = getIntent().getExtras();
+        byte[] byteArray = extras.getByteArray("picture");
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        image.setImageBitmap(bmp);
     }
 }
