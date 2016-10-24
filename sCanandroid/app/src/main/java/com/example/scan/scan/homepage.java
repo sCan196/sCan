@@ -17,11 +17,25 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import android.content.Context;
+import android.util.SparseArray;
+import android.widget.ImageView;
+import android.content.Context;
+
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.Frame.Builder;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
+
 public class homepage extends AppCompatActivity {
     Button btnscan;
     Button btnPicLib;
     private static final int
         REQUEST_IMAGE_CAPTURE = 1, PICK_IMAGE = 100;
+
+    private static final String LOG_TAG = "testOCR.java";
+    private static final String TAG = "testOCR.java";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +45,6 @@ public class homepage extends AppCompatActivity {
         String s = intent.getStringExtra("username");
         s = s.trim();
 
-        /* this shouldn't be needed now
-        if (s.contains("\n"))
-            s = s.substring(0, s.indexOf("\n");
-         */
         if (s.contains(" "))
             s = s.substring(0,s.indexOf(" ")); // trim to first name
 
@@ -71,7 +81,6 @@ public class homepage extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
-    // returns the image clicked by the camera to displayimage.class activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -100,29 +109,36 @@ public class homepage extends AppCompatActivity {
 
         assert imageBitmap != null; // this should never happen
 
-        // PREPROCESSING STUFF GOES HERE
-        // for encapsulation
-        imageBitmap = PreProcessing.doStuff(imageBitmap);
 
-        // OCR STUFF GOES HERE
-        /* OCR TEAM
-            return the bitmap to the OCR team for further processing into string.
-            I have created another activity to display your string. We will link the string you return
-            to that activity on Saturday. Below is the code to display the processed image on a new activity
-            I have created another activity to display your string. Below is the code to display the processed image on a new activity
-            just for testing if pre processing is working. Will remove it on Saturday.
-            If pre processing methods are not working then remove them.
-        */
+        // PREPROCESSING (has been removed temporarily due to dysfunctionality.
+        //imageBitmap = PreProcessing.doStuff(imageBitmap);
 
-        // just getting a pre-processed image onto the screen
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        // OCR
+        String answer = "START OF TEXT\n\n";
+        Context context = getApplicationContext();
+        TextRecognizer ocrFrame = new TextRecognizer.Builder(context).build();
+        Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
+        SparseArray<TextBlock> textBlocks = ocrFrame.detect(frame);
+        for (int i = 0; i < textBlocks.size(); i++) {
+            answer += textBlocks.get(textBlocks.keyAt(i)).getValue();
+        }
+        answer += "\n\nEND OF TEXT";
+
+        //passing the detected text to DisplayText.class
+        Intent intent = new Intent(this, DisplayText.class);
+        intent.putExtra("text", answer);
+        startActivity(intent);
+
+
+        // THIS IS USED FOR DEBUGGING BITMAPS. TRIAL PURPOSE ONLY
+        /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(this, DisplayImage.class);
         intent.putExtra("picture", byteArray);
-        startActivity(intent);
+        startActivity(intent);*/
 
-        // text view stuff
     }
 
     //Method to Decode URI to Bitmap
@@ -134,7 +150,7 @@ public class homepage extends AppCompatActivity {
         BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
 
         // The new size we want to scale to
-        final int REQUIRED_SIZE = 140;
+        final int REQUIRED_SIZE = 400;
 
         // Find the correct scale value. It should be the power of 2.
         int width_tmp = o.outWidth, height_tmp = o.outHeight;
