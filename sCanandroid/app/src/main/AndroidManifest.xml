@@ -3,10 +3,7 @@
     package="com.example.scan.scan">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
-
-    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -26,7 +23,8 @@
         </activity>
         <activity android:name=".homepage" />
         <activity android:name=".DisplayImage" />
-        <activity android:name=".DisplayText"></activity>
+        <activity android:name=".DisplayText" />
+        <activity android:name=".ListFilesActivity"></activity>
     </application>
 
 </manifest>

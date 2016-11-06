@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.OutputStreamWriter;
 
 public class DisplayText extends AppCompatActivity {
 
@@ -17,5 +20,6 @@ public class DisplayText extends AppCompatActivity {
         String answer = intent.getExtras().getString("text");
         printText.setText(answer);
         printText.setMovementMethod(new ScrollingMovementMethod());
+
     }
 }

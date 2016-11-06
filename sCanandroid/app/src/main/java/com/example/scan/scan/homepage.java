@@ -1,36 +1,41 @@
 package com.example.scan.scan;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import android.content.Context;
 import android.util.SparseArray;
+import android.widget.ImageView;
+import android.content.Context;
 import android.widget.Toast;
 
+import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.Frame.Builder;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 public class homepage extends AppCompatActivity {
     Button btnscan;
     Button btnPicLib;
+    Button btnDocList;
     private static final int
         REQUEST_IMAGE_CAPTURE = 1, PICK_IMAGE = 100;
-    public static final int CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE = 1777;
 
     private static final String LOG_TAG = "testOCR.java";
     private static final String TAG = "testOCR.java";
@@ -56,10 +61,20 @@ public class homepage extends AppCompatActivity {
         btnscan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                    File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                    startActivityForResult(intent, CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+                }
+            }
+        });
+
+        btnDocList = (Button) findViewById(R.id.doclibrarybutton);
+        btnDocList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startListView = new Intent(homepage.this, ListFilesActivity.class);
+                startActivity(startListView);
             }
         });
 
@@ -87,33 +102,21 @@ public class homepage extends AppCompatActivity {
         Bitmap imageBitmap = null;
 
         // IF PHOTO IS TAKEN USING CAMERA
-        if (requestCode == CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE)
-        {
-            //Get our saved file into a bitmap object:
-            File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
-            imageBitmap = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
         }
 
         // IF PICTURE IS TAKEN FROM PHOTO LIBRARY
         if (requestCode == PICK_IMAGE){
             Uri imageUri = data.getData();
 
-            //PRIMARY METHOD
             try {
                 imageBitmap = decodeUri(imageUri);
             } catch (FileNotFoundException e) { // this should never happen
                 e.printStackTrace();
                 return;
             }
-
-            //BACKUP METHOD
-            /**
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            */
         }
 
         assert imageBitmap != null; // this should never happen
@@ -124,7 +127,7 @@ public class homepage extends AppCompatActivity {
 
 
         // OCR
-        String answer = "START OF TEXT\n\n";
+        String answer = "";
         Context context = getApplicationContext();
         TextRecognizer ocrFrame = new TextRecognizer.Builder(context).build();
         Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
@@ -132,12 +135,30 @@ public class homepage extends AppCompatActivity {
         for (int i = 0; i < textBlocks.size(); i++) {
             answer += textBlocks.get(textBlocks.keyAt(i)).getValue();
         }
-        answer += "\n\nEND OF TEXT";
+
+        try {
+
+            OutputStreamWriter out= new OutputStreamWriter(openFileOutput("0.txt", 0));
+
+            out.write(answer);
+
+            out.close();
+
+            Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();
+
+        }
+
+        catch (Throwable t) {
+
+            Toast.makeText(this, "Exception: "+t.toString(), Toast.LENGTH_LONG).show();
+
+        }
+
 
         //passing the detected text to DisplayText.class
-        Intent intent = new Intent(this, DisplayText.class);
+        /*Intent intent = new Intent(this, DisplayText.class);
         intent.putExtra("text", answer);
-        startActivity(intent);
+        startActivity(intent);*/
 
 
         // THIS IS USED FOR DEBUGGING BITMAPS. TRIAL PURPOSE ONLY
@@ -179,42 +200,5 @@ public class homepage extends AppCompatActivity {
         o2.inSampleSize = scale;
         return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
 
-    }
-
-
-
-    // Helper Function
-    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
-    { // BEST QUALITY MATCH
-
-        //First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-
-        // Calculate inSampleSize, Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        int inSampleSize = 1;
-
-        if (height > reqHeight)
-        {
-            inSampleSize = Math.round((float)height / (float)reqHeight);
-        }
-        int expectedWidth = width / inSampleSize;
-
-        if (expectedWidth > reqWidth)
-        {
-            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
-            inSampleSize = Math.round((float)width / (float)reqWidth);
-        }
-
-        options.inSampleSize = inSampleSize;
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(path, options);
     }
 }
