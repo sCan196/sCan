@@ -16,11 +16,13 @@ import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import android.content.Context;
 import android.util.SparseArray;
 import android.widget.ImageView;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Frame;
@@ -31,6 +33,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 public class homepage extends AppCompatActivity {
     Button btnscan;
     Button btnPicLib;
+    Button btnDocList;
     private static final int
         REQUEST_IMAGE_CAPTURE = 1, PICK_IMAGE = 100;
 
@@ -63,6 +66,15 @@ public class homepage extends AppCompatActivity {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
                 }
+            }
+        });
+
+        btnDocList = (Button) findViewById(R.id.doclibrarybutton);
+        btnDocList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startListView = new Intent(homepage.this, ListFilesActivity.class);
+                startActivity(startListView);
             }
         });
 
@@ -115,7 +127,7 @@ public class homepage extends AppCompatActivity {
 
 
         // OCR
-        String answer = "START OF TEXT\n\n";
+        String answer = "";
         Context context = getApplicationContext();
         TextRecognizer ocrFrame = new TextRecognizer.Builder(context).build();
         Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
@@ -123,12 +135,30 @@ public class homepage extends AppCompatActivity {
         for (int i = 0; i < textBlocks.size(); i++) {
             answer += textBlocks.get(textBlocks.keyAt(i)).getValue();
         }
-        answer += "\n\nEND OF TEXT";
+
+        try {
+
+            OutputStreamWriter out= new OutputStreamWriter(openFileOutput("0.txt", 0));
+
+            out.write(answer);
+
+            out.close();
+
+            Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();
+
+        }
+
+        catch (Throwable t) {
+
+            Toast.makeText(this, "Exception: "+t.toString(), Toast.LENGTH_LONG).show();
+
+        }
+
 
         //passing the detected text to DisplayText.class
-        Intent intent = new Intent(this, DisplayText.class);
+        /*Intent intent = new Intent(this, DisplayText.class);
         intent.putExtra("text", answer);
-        startActivity(intent);
+        startActivity(intent);*/
 
 
         // THIS IS USED FOR DEBUGGING BITMAPS. TRIAL PURPOSE ONLY

@@ -23,7 +23,8 @@
         </activity>
         <activity android:name=".homepage" />
         <activity android:name=".DisplayImage" />
-        <activity android:name=".DisplayText"></activity>
+        <activity android:name=".DisplayText" />
+        <activity android:name=".ListFilesActivity"></activity>
     </application>
 
 </manifest>
