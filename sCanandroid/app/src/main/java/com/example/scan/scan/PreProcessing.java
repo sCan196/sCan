@@ -14,7 +14,11 @@ public class PreProcessing {
      * encapsulation
      */
     public static Bitmap doStuff(Bitmap in) {
-        return in;
+        Bitmap bmp = toGrayscale(cloneToMute(in));
+
+        System.out.println(bmp.getWidth());
+        System.out.println(bmp.getHeight());
+        return bmp;
     }
 
     /**
@@ -30,8 +34,8 @@ public class PreProcessing {
      * @return int[] {red, green, blue}
      */
     private static int[] unpackRGB(int pixel) {
-        int red = (pixel & 0xFF0000) << 16;
-        int green = (pixel & 0x00FF00) << 8;
+        int red = (pixel & 0xFF0000) >> 16;
+        int green = (pixel & 0x00FF00) >> 8;
         int blue = (pixel & 0x0000FF);
         return new int[] {red, green, blue};
     }
@@ -51,6 +55,8 @@ public class PreProcessing {
     public static Bitmap toGrayscale(Bitmap bmp) {
         int height = bmp.getHeight();
         int width = bmp.getWidth();
+
+
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
