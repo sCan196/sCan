@@ -3,16 +3,11 @@ package com.example.scan.scan;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -46,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         });
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         EditText name = (EditText) findViewById(R.id.username);
-        String entered = preferences.getString(KEY, "qwuidfghj");
-        if(entered.equals("qwuidfghj")){ //user is opening the app for the first time
+
+        final String kludge = "qwuidfghj";
+        String entered = preferences.getString(KEY, kludge);
+        if (entered.equals(kludge)) { //user is opening the app for the first time
 
         }
-        else{
-            name.setText(preferences.getString(KEY, "qwuidfghj"));
-        }
+        else name.setText(entered);
     }
 
 }
