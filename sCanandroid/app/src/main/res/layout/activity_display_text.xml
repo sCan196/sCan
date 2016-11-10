@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/textDisplay"
+        android:textSize="20sp"
         android:maxLines="500"
         android:scrollbars="vertical"
         />
