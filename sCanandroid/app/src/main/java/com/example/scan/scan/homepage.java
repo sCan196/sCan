@@ -1,15 +1,19 @@
 package com.example.scan.scan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -34,6 +38,7 @@ public class homepage extends AppCompatActivity {
     Button btnscan;
     Button btnPicLib;
     Button btnDocList;
+    public String textFileName = "";
     private static final int
         REQUEST_IMAGE_CAPTURE = 1, PICK_IMAGE = 100;
 
@@ -125,34 +130,61 @@ public class homepage extends AppCompatActivity {
         // PREPROCESSING (has been removed temporarily due to dysfunctionality.
         //imageBitmap = PreProcessing.doStuff(imageBitmap);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Type text file name:");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        final Bitmap finalImageBitmap = imageBitmap;
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textFileName = input.getText().toString();
+                String answer = "";
+                Context context = getApplicationContext();
+                TextRecognizer ocrFrame = new TextRecognizer.Builder(context).build();
+                Frame frame = new Frame.Builder().setBitmap(finalImageBitmap).build();
+                SparseArray<TextBlock> textBlocks = ocrFrame.detect(frame);
+                for (int i = 0; i < textBlocks.size(); i++) {
+                    answer += textBlocks.get(textBlocks.keyAt(i)).getValue();
+                }
+
+
+                try {
+
+                    OutputStreamWriter out= new OutputStreamWriter(openFileOutput(textFileName + ".txt", 0));
+
+                    out.write(answer);
+
+                    out.close();
+
+                    Toast.makeText(getApplicationContext(), "The contents are saved in the file "+ textFileName + ".txt.", Toast.LENGTH_LONG).show();
+
+                }
+
+                catch (Throwable t) {
+
+                    Toast.makeText(getApplicationContext(), "Exception: "+t.toString(), Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
 
         // OCR
-        String answer = "";
-        Context context = getApplicationContext();
-        TextRecognizer ocrFrame = new TextRecognizer.Builder(context).build();
-        Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
-        SparseArray<TextBlock> textBlocks = ocrFrame.detect(frame);
-        for (int i = 0; i < textBlocks.size(); i++) {
-            answer += textBlocks.get(textBlocks.keyAt(i)).getValue();
-        }
-
-        try {
-
-            OutputStreamWriter out= new OutputStreamWriter(openFileOutput("0.txt", 0));
-
-            out.write(answer);
-
-            out.close();
-
-            Toast.makeText(this, "The contents are saved in the file.", Toast.LENGTH_LONG).show();
-
-        }
-
-        catch (Throwable t) {
-
-            Toast.makeText(this, "Exception: "+t.toString(), Toast.LENGTH_LONG).show();
-
-        }
 
 
         //passing the detected text to DisplayText.class
