@@ -40,10 +40,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 
 public class homepage extends AppCompatActivity {
     private static final int
-            REQUEST_IMAGE_CAPTURE = 1, PICK_IMAGE = 100;
-    public static final int CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE = 1777;
-    private static final String LOG_TAG = "testOCR.java";
-    private static final String TAG = "testOCR.java";
+            PICK_IMAGE = 100, CAPTURE_IMAGE = 1777;
 
     public String textFileName = "";
 
@@ -74,7 +71,7 @@ public class homepage extends AppCompatActivity {
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(intent, CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(intent, CAPTURE_IMAGE);
             }
         });
 
@@ -106,13 +103,16 @@ public class homepage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (BuildConfig.DEBUG && resultCode != RESULT_OK)
-            throw new RuntimeException("Result NOT ok for some reason");
+        if (resultCode != RESULT_OK) {
+            if (BuildConfig.DEBUG)
+                Toast.makeText(getApplicationContext(), "Canceled.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Bitmap imageBitmap = null;
 
         // IF PHOTO IS TAKEN USING CAMERA
-        if (requestCode == CAPTURE_IMAGE_FULLSIZE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CAPTURE_IMAGE) {
             //Get our saved file into a bitmap object:
             File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
             imageBitmap = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
@@ -121,7 +121,7 @@ public class homepage extends AppCompatActivity {
         if (requestCode == PICK_IMAGE) {
             Uri imageUri = data.getData();
 
-            //PRIMARY PHOTO LIBRARY METHOD
+            // primary method
             try {
                 imageBitmap = decodeUri(imageUri);
             } catch (FileNotFoundException e) { // this should never happen
@@ -130,13 +130,11 @@ public class homepage extends AppCompatActivity {
             }
 
             //BACKUP METHOD
-            /**
-             try {
-             imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-             } catch (IOException e) {
-             e.printStackTrace();
-             }
-             */
+            /*try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
 
         if (BuildConfig.DEBUG && imageBitmap == null)
@@ -183,7 +181,7 @@ public class homepage extends AppCompatActivity {
                 } catch (Throwable t) {
                     Toast.makeText(getApplicationContext(), "Exception: " + t.toString(), Toast.LENGTH_LONG).show();
                     if (BuildConfig.DEBUG)
-                        t.printStackTrace();
+                        throw new RuntimeException(t);
                 }
             }
         });
