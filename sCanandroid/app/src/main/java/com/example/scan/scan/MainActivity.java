@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, homepage.class);
+                Intent intent = new Intent(MainActivity.this, HomePage.class);
                 EditText editText = (EditText) findViewById(R.id.username);
                 String message = editText.getText().toString();
                 SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
