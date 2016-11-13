@@ -32,7 +32,6 @@ public class WelcomePage extends AppCompatActivity {
                 Intent intent = new Intent(context, HomePage.class);
                 EditText editText = (EditText) findViewById(R.id.username);
                 String message = editText.getText().toString().trim();
-                SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
                 editor.putString(KEY, message);
                 editor.commit();
