@@ -204,7 +204,6 @@ public class HomePage extends AppCompatActivity {
 
         builder.show();
 
-        // OCR
         // uncomment this code to show the text without saving it
         /*
         Intent intent = new Intent(this, DisplayText.class);
