@@ -9,14 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class WelcomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final String KEY = "entered";
         final String SHARED_PREF_NAME = "generals_prefs";
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_welcome);
         Button btn = (Button) findViewById(R.id.signinbutton);
+
         final Context context = this;
 
         /*
@@ -28,10 +29,9 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, homepage.class);
+                Intent intent = new Intent(context, HomePage.class);
                 EditText editText = (EditText) findViewById(R.id.username);
-                String message = editText.getText().toString();
-                SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                String message = editText.getText().toString().trim();
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
                 editor.putString(KEY, message);
                 editor.commit();
@@ -39,15 +39,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 }
         });
+
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         EditText name = (EditText) findViewById(R.id.username);
 
-        final String kludge = "qwuidfghj";
+        final String kludge = "qwuidfghj" + Math.random() + System.currentTimeMillis(); // surely no one will break this
         String entered = preferences.getString(KEY, kludge);
-        if (entered.equals(kludge)) { //user is opening the app for the first time
-
+        if (entered.equals(kludge)) {
+            int a = 3 + 3;
+            // do stuff
+        } else {
+            name.setText(entered);
+            Intent intent = new Intent(context, HomePage.class);
+            intent.putExtra("username", entered);
+            startActivity(intent);
         }
-        else name.setText(entered);
+
     }
 
 }

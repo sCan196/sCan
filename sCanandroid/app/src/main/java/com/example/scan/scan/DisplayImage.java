@@ -10,8 +10,9 @@ import android.widget.ImageView;
 public class DisplayImage extends AppCompatActivity {
 
     /*
-    This activity is TEMPORARY. Just used for testing. It just displays the image clicked by camera
-    or taken from Photo Library
+    This activity is just for testing.
+    It just displays the image that we selected.
+    Preprocessing code should make sure that we do stuff to the image.
     */
 
     @Override

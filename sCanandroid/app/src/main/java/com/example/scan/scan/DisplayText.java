@@ -11,15 +11,20 @@ import java.io.OutputStreamWriter;
 
 public class DisplayText extends AppCompatActivity {
 
+    /*
+    This is just a text view for displaying... well... text.
+    */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_text);
         TextView printText = (TextView) findViewById(R.id.textDisplay);
+
         Intent intent = this.getIntent();
         String answer = intent.getExtras().getString("text");
+
         printText.setText(answer);
         printText.setMovementMethod(new ScrollingMovementMethod());
-
     }
 }
