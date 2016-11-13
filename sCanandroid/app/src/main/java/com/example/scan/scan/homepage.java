@@ -35,6 +35,8 @@ public class HomePage extends AppCompatActivity {
     private static final String
             store = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
 
+    private static final int MAX_NAME_CHARS = 11;
+
     private String textFileName = "";
 
     Button btnScan;
@@ -49,12 +51,13 @@ public class HomePage extends AppCompatActivity {
 
         // let's greet people nicely
         String s = intent.getStringExtra("username");
-        s = s.trim();
-
+        s = s.toLowerCase();
         if (s.contains(" "))
             s = s.substring(0, s.indexOf(" ")); // trim to first name
-
         s = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
+        if (s.length() > MAX_NAME_CHARS)
+            s = s.substring(0, MAX_NAME_CHARS);
+
         TextView user = (TextView) findViewById(R.id.showuser);
         user.setText("Hello, " + s + "!");
 
