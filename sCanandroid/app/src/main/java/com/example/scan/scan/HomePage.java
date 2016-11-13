@@ -160,10 +160,16 @@ public class HomePage extends AppCompatActivity {
 
         // pipe out text
         StringBuilder answer = new StringBuilder();
-        System.out.println(textBlocks.size());
+
+        if (textBlocks.size() <= 0) {
+            Toast.makeText(getApplicationContext(), R.string.no_text, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         for (int i = 0; i < textBlocks.size(); i++)
             answer.append(textBlocks.get(textBlocks.keyAt(i)).getValue());
 
+        System.out.println(answer);
         final String result = answer.toString();
 
         // alert setup
@@ -184,7 +190,6 @@ public class HomePage extends AppCompatActivity {
                     // random values
                     textFileName = "sCan-" + (int) (Math.random() * 0x66600000);
                 }
-
 
                 try {
                     OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName + ".txt", 0));

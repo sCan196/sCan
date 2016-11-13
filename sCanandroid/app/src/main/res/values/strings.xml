@@ -3,4 +3,5 @@
     <string name="scanned_picture">sCanned picture!</string>
     <string name="except_other">Exception (see output)</string>
     <string name="cancel">Canceled.</string>
+    <string name="no_text">There was no text in that picture.</string>
 </resources>
