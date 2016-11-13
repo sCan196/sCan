@@ -17,6 +17,7 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         Button btn = (Button) findViewById(R.id.signinbutton);
+
         final Context context = this;
 
         /*
@@ -30,7 +31,7 @@ public class WelcomePage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(context, HomePage.class);
                 EditText editText = (EditText) findViewById(R.id.username);
-                String message = editText.getText().toString();
+                String message = editText.getText().toString().trim();
                 SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
                 editor.putString(KEY, message);
@@ -50,7 +51,9 @@ public class WelcomePage extends AppCompatActivity {
             // do stuff
         } else {
             name.setText(entered);
-            startActivity(new Intent(this, HomePage.class));
+            Intent intent = new Intent(context, HomePage.class);
+            intent.putExtra("username", entered);
+            startActivity(intent);
         }
 
     }
