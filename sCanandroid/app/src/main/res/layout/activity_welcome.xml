@@ -17,11 +17,14 @@
         android:layout_height="wrap_content"
         android:text="Welcome to sCan!"
         android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="35dp" />
+
     <Space
         android:layout_width="match_parent"
-        android:layout_height="70dp"/>
+        android:layout_height="20dp"/>
+
     <EditText
         android:layout_width="match_parent"
         android:hint="Enter Your Name"
@@ -31,11 +34,29 @@
         android:singleLine="true"
         android:id="@+id/username"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textAlignment="center" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:hint="Enter Your Email Address"
+        android:textColorHint="#999999"
+        android:textColor="#FFFFFF"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:id="@+id/emailaddress"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
