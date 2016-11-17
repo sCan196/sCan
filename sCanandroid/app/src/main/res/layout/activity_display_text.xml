@@ -14,12 +14,6 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:text="@string/scanned_picture"
-        android:layout_height="25dp"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/textDisplay"
         android:textSize="18sp"

@@ -8,11 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,37 +44,11 @@ public class ListFilesActivity extends AppCompatActivity {
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                try {
-                    String name = (String) (parent.getItemAtPosition(position));
-                    InputStream in = openFileInput(name);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-                    // pipe in text
-                    String str;
-                    StringBuilder buf = new StringBuilder();
-                    while ((str = reader.readLine()) != null) {
-                        buf.append(str);
-                        buf.append("\n");
-                        buf.append("\n"); // 2 line breaks between each block. you can fix that later.
-                    }
-
-                    in.close();
-
-                    // displayText
-                    Intent intent = new Intent(thisActivity, DisplayText.class);
-                    intent.putExtra("text", buf.toString());
-                    startActivity(intent);
-
-                    //Toast.makeText(ListFilesActivity.this, buf.toString(), Toast.LENGTH_LONG).show();
-                } catch (FileNotFoundException e) {
-                    Toast.makeText(getApplicationContext(), "Couldn't find that file.", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                } catch (Throwable t) {
-                    Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
-                    t.printStackTrace();
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = (String) (parent.getItemAtPosition(position));
+                Intent intentPop = new Intent(ListFilesActivity.this,PopUp.class);
+                intentPop.putExtra("FileName", name);
+                startActivity(intentPop);
             }
         });
 

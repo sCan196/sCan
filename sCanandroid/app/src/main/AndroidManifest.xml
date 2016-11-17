@@ -3,6 +3,9 @@
     package="com.example.scan.scan">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.autofocus"/>
     <uses-feature
@@ -25,6 +28,9 @@
         <activity android:name=".DisplayImage" />
         <activity android:name=".DisplayText" />
         <activity android:name=".ListFilesActivity" />
+        <activity android:name=".PopUp"
+            android:theme="@style/AppTheme.CustomPop"
+            ></activity>
     </application>
 
 </manifest>
