@@ -15,9 +15,9 @@ public class ListFilesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_files);
+
         final ListView lv = (android.widget.ListView) findViewById(R.id.listFiles);
         final ArrayAdapter<String> arrayAdapter;
         assert lv != null;

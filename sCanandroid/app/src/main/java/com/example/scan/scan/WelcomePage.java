@@ -11,14 +11,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class WelcomePage extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final String KEY = "entered";
-        final String EMAIL_KEY = "UserEmail";
-        final String SHARED_PREF_NAME = "generals_prefs";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        final String KEY_NAME = "userName";
+        final String KEY_EMAIL = "userEmail";
+
+        final String SHARED_PREF_NAME = "generals_prefs"; // why is this the name
+
+        final EditText etUserName = (EditText) findViewById(R.id.username);
+        final EditText etUserEmail = (EditText) findViewById(R.id.useremail);
+        assert etUserName != null;
+        assert etUserEmail != null;
+        System.out.println(etUserName);
+        // suppress Android Studio warnings, since both of these should always be true!
+
         Button btn = (Button) findViewById(R.id.signinbutton);
+        assert btn != null;
 
         final Context context = this;
 
@@ -31,48 +43,52 @@ public class WelcomePage extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, HomePage.class);
-                EditText editText = (EditText) findViewById(R.id.username);
-                EditText emailEdit = (EditText) findViewById(R.id.emailaddress);
-                String message = editText.getText().toString();
-                if(message.equals("")){
-                    Toast.makeText(getApplicationContext(), "Please enter name", Toast.LENGTH_LONG).show();
+                String userName = etUserName.getText().toString().trim();
+                String userEmail = etUserEmail.getText().toString().trim();
+
+                if (userName.equals("")) {
+                    Toast.makeText(getApplicationContext(), R.string.enter_name, Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(emailEdit.getText().toString().indexOf('@') < 0){
-                    Toast.makeText(getApplicationContext(), "Please enter a valid email id", Toast.LENGTH_LONG).show();
+                if (userEmail.indexOf('@') <= 0) {
+                    Toast.makeText(getApplicationContext(), R.string.enter_email, Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
-                editor.putString(KEY, message.trim());
-                editor.putString(EMAIL_KEY,emailEdit.getText().toString().trim());
-                editor.commit();
-                intent.putExtra("username", message);
-                startActivity(intent);
-                }
+                editor.putString(KEY_NAME, userName);
+                editor.putString(KEY_EMAIL, userEmail);
+                editor.apply();
+
+                finishWelcomeScreen(userName);
+            }
         });
 
+
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        EditText name = (EditText) findViewById(R.id.username);
-        EditText addressName = (EditText) findViewById(R.id.emailaddress);
 
-        final String kludge = "qwuidfghj" + Math.random() + System.currentTimeMillis(); // surely no one will break this
-        String entered = preferences.getString(KEY, kludge);
-        String addressEntered = preferences.getString(EMAIL_KEY, kludge);
-        if (entered.equals(kludge) || addressEntered.equals(kludge) || entered.equals("") || addressEntered.equals("")) {
-            if(!entered.equals(kludge) && !entered.equals(""))
-                name.setText(entered);
-            if(!addressEntered.equals(kludge) && !addressEntered.equals(""))
-                addressName.setText(addressEntered);
-        }
-        else {
-            name.setText(entered);
-            addressName.setText(addressEntered);
-            Intent intent = new Intent(context, HomePage.class);
-            intent.putExtra("username", entered);
-            startActivity(intent);
+        final String kludge = "kludge" + ((int) (Math.random() * Integer.MAX_VALUE)) + System.currentTimeMillis();
+        // surely no one would try this
+
+        String prevUserName = preferences.getString(KEY_NAME, kludge);
+        String prevUserEmail = preferences.getString(KEY_EMAIL, kludge);
+
+        if (!prevUserName.equals(kludge)) etUserName.setText(prevUserName);
+        if (!prevUserEmail.equals(kludge)) etUserEmail.setText(prevUserEmail);
+
+        if (!prevUserName.equals("") && !(prevUserEmail.indexOf('@') <= 0)) {
+            finishWelcomeScreen(prevUserName);
         }
 
+    }
+
+    /**
+     * literally in the name of not duplicating code!
+     */
+    private void finishWelcomeScreen(String userName) {
+        Intent intent = new Intent(this, HomePage.class);
+        intent.putExtra("username", userName);
+        startActivity(intent);
     }
 
 }

@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">sCan</string>
-    <string name="scanned_picture">sCanned picture!</string>
     <string name="except_other">Exception (see output)</string>
     <string name="cancel">Canceled.</string>
     <string name="no_text">There was no text in that picture.</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_email">Enter your email address</string>
+    <string name="please">Please</string>
 </resources>
