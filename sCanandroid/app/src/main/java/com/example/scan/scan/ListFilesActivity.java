@@ -45,7 +45,7 @@ public class ListFilesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = (String) (parent.getItemAtPosition(position));
-                Intent intentPop = new Intent(ListFilesActivity.this,PopUp.class);
+                Intent intentPop = new Intent(ListFilesActivity.this, PopUp.class);
                 intentPop.putExtra("FileName", name);
                 startActivity(intentPop);
             }

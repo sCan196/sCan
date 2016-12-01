@@ -40,8 +40,6 @@ public class HomePage extends AppCompatActivity {
 
     private static final int MAX_NAME_CHARS = 11;
 
-    private String textFileName = "";
-
     Button btnScan;
     Button btnPicLib;
     Button btnDocList;
@@ -188,21 +186,25 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // save plz
-                textFileName = input.getText().toString();
+                for (int i = 0; i < 100; i++) {
+                String textFileName = input.getText().toString();
                 if (textFileName.equals("")) {
                     // random values
                     textFileName = "sCan-" + (int) (Math.random() * 0x66600000);
                 }
 
+                if (!textFileName.endsWith(".txt"))
+                    textFileName = textFileName + ".txt";
+
                 try {
-                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName + ".txt", 0));
+                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName, 0));
                     out.write(result);
                     out.close();
-                    Toast.makeText(getApplicationContext(), "Saved text to " + textFileName + ".txt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Saved text to " + textFileName, Toast.LENGTH_SHORT).show();
                 } catch (Throwable t) {
                     Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                     t.printStackTrace();
-                }
+                }}
             }
         });
 
