@@ -22,7 +22,6 @@ public class ListFilesActivity extends AppCompatActivity {
         final ArrayAdapter<String> arrayAdapter;
         assert lv != null;
 
-        // get file list
         String[] list = fileList();
         ArrayList<String> resultList = new ArrayList<>();
         if (list != null) {

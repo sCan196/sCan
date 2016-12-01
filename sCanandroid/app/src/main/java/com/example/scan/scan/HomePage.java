@@ -32,6 +32,9 @@ public class HomePage extends AppCompatActivity {
     private static final int
             PICK_IMAGE = 420, CAPTURE_IMAGE = 666;
 
+    private static final int
+            SAMPLE_HEIGHT = 1920, SAMPLE_WIDTH = (SAMPLE_HEIGHT >> 2) * 3; // * 3/4
+
     private static final String
             store = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
 
@@ -112,7 +115,7 @@ public class HomePage extends AppCompatActivity {
         // IF PHOTO IS TAKEN USING CAMERA
         if (requestCode == CAPTURE_IMAGE) {
             try {
-                imageBitmap = decodeSampledBitmapFromFile(store, 1024, 768);
+                imageBitmap = decodeSampledBitmapFromFile(store, SAMPLE_HEIGHT, SAMPLE_WIDTH);
             } catch (Exception e) { // this should never happen
                 Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
@@ -126,7 +129,7 @@ public class HomePage extends AppCompatActivity {
 
             // primary method
             try {
-                imageBitmap = decodeUri(imageUri, 1024, 768);
+                imageBitmap = decodeUri(imageUri, SAMPLE_HEIGHT, SAMPLE_WIDTH);
             } catch (Exception e) { // this should never happen
                 Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
