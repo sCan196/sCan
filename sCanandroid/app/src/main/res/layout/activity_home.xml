@@ -5,70 +5,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     android:weightSum="10"
-    android:background="@drawable/background"
     tools:context="com.example.scan.scan.HomePage">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/showuser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2">
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/showuser"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:textSize="35dp"
-            android:textColor="#FFFFFF">
-        </TextView>
-    </LinearLayout>
+        android:layout_weight="2"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp">
+    </TextView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:weightSum="4"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:orientation="horizontal">
-        <Button
-            android:layout_height="170dp"
-            android:layout_width="match_parent"
-            android:layout_weight="2"
-            android:id="@+id/scanbutton"
-            android:text="SCAN"
-            android:textSize="25dp"
-            android:background="@drawable/scan"
-            android:textColor="#FFFFFF"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_weight="2"
-            android:id="@+id/photolibrarybutton"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/photolibrary"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="4"
-        android:layout_weight="4"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_weight="2"
-            android:id="@+id/pdflibrarybutton"
-            android:background="@drawable/pdflibrary"/>
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_weight="2"
-            android:id="@+id/doclibrarybutton"
-            android:background="@drawable/doclibrary"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/scanbutton"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/scan" />
+
+            <Button
+                android:id="@+id/photolibrarybutton"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/photolibrary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/pdflibrarybutton"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/pdflibrary" />
+
+            <Button
+                android:id="@+id/doclibrarybutton"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/doclibrary" />
+        </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>
