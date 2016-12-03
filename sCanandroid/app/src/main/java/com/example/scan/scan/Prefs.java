@@ -11,6 +11,5 @@ public class Prefs {
     public static final String SHARED_PREF_NAME = "generals_prefs";
 
     public static final String KEY_NAME = "userName";
-    public static final String KEY_NAME_SHORT = "userNameShort";
     public static final String KEY_EMAIL = "userEmail";
 }
