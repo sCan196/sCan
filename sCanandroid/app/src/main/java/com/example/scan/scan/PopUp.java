@@ -24,17 +24,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 /**
+ * The pop-up interface that appears on long-press.
  * Created by ayushranjan on 15/11/16.
  */
 
-public class PopUp extends Activity{
+public class PopUp extends Activity {
     final Context context = this;
-    final String SHARED_PREF_NAME = "generals_prefs";
-    final String EMAIL_KEY = "UserEmail";
-    final String KEY = "entered";
-    private String filepath = "MyFileStorage";
     public String myData = "";
     Date dateobj;
 
@@ -43,10 +39,10 @@ public class PopUp extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_layout);
 
-        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String addressEntered = preferences.getString(EMAIL_KEY, "default");
+        SharedPreferences preferences = context.getSharedPreferences(Prefs.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String addressEntered = preferences.getString(Prefs.KEY_EMAIL, "default");
 
-        String PhoneName = preferences.getString(KEY, "default");
+        String PhoneName = preferences.getString(Prefs.KEY_NAME, "default");
         PhoneName = PhoneName.toLowerCase();
         if (PhoneName.contains(" "))
             PhoneName = PhoneName.substring(0, PhoneName.indexOf(" ")); // trim to first name
@@ -56,6 +52,8 @@ public class PopUp extends Activity{
         Intent intent = this.getIntent();
 
         final String name = intent.getExtras().getString("FileName");
+
+        String filepath = "MyFileStorage";
         final File attachmentExternal = new File(getExternalFilesDir(filepath), name);
         final File attachment = getApplicationContext().getFileStreamPath(name);
         try {

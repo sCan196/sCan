@@ -17,17 +17,10 @@ public class WelcomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        final String KEY_NAME = "userName";
-        final String KEY_EMAIL = "userEmail";
-
-        final String SHARED_PREF_NAME = "generals_prefs"; // why is this the name
-
         final EditText etUserName = (EditText) findViewById(R.id.username);
         final EditText etUserEmail = (EditText) findViewById(R.id.useremail);
         assert etUserName != null;
         assert etUserEmail != null;
-        System.out.println(etUserName);
-        // suppress Android Studio warnings, since both of these should always be true!
 
         Button btn = (Button) findViewById(R.id.signinbutton);
         assert btn != null;
@@ -55,23 +48,22 @@ public class WelcomePage extends AppCompatActivity {
                     return;
                 }
 
-                SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
-                editor.putString(KEY_NAME, userName);
-                editor.putString(KEY_EMAIL, userEmail);
+                SharedPreferences.Editor editor = context.getSharedPreferences(Prefs.SHARED_PREF_NAME, Context.MODE_PRIVATE).edit();
+                editor.putString(Prefs.KEY_NAME, userName);
+                editor.putString(Prefs.KEY_EMAIL, userEmail);
                 editor.apply();
 
                 finishWelcomeScreen(userName);
             }
         });
 
+        SharedPreferences preferences = context.getSharedPreferences(Prefs.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-        final String kludge = "kludge" + ((int) (Math.random() * Integer.MAX_VALUE)) + System.currentTimeMillis();
+        final String kludge = "" + ((int) (Math.random() * Integer.MAX_VALUE)) + System.currentTimeMillis();
         // surely no one would try this
 
-        String prevUserName = preferences.getString(KEY_NAME, kludge);
-        String prevUserEmail = preferences.getString(KEY_EMAIL, kludge);
+        String prevUserName = preferences.getString(Prefs.KEY_NAME, kludge);
+        String prevUserEmail = preferences.getString(Prefs.KEY_EMAIL, kludge);
 
         if (!prevUserName.equals(kludge)) etUserName.setText(prevUserName);
         if (!prevUserEmail.equals(kludge)) etUserEmail.setText(prevUserEmail);

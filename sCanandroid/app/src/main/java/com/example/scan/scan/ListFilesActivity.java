@@ -51,6 +51,7 @@ public class ListFilesActivity extends AppCompatActivity {
             }
         });
 
+        // we should change this to a pop-up menu
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,

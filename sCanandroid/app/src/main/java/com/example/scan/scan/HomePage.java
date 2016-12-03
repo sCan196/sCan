@@ -38,6 +38,7 @@ public class HomePage extends AppCompatActivity {
     private static final String
             store = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
 
+    /** If you put in excessively long names the UI on the home screen will flow oddly */
     private static final int MAX_NAME_CHARS = 11;
 
     Button btnScan;
@@ -52,7 +53,6 @@ public class HomePage extends AppCompatActivity {
 
         // let's greet people nicely
         String s = intent.getStringExtra("username");
-        s = s.toLowerCase();
         if (s.contains(" "))
             s = s.substring(0, s.indexOf(" ")); // trim to first name
         s = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
