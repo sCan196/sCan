@@ -28,12 +28,12 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -44,18 +44,31 @@
 
             <Button
                 android:id="@+id/scanbutton"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
                 android:layout_weight="1"
-                android:background="@drawable/scan" />
+                android:background="@drawable/scan"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:text="@string/scan"
+                android:textSize="18sp"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/photolibrarybutton"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
                 android:layout_weight="1"
-                android:background="@drawable/photolibrary" />
+                android:background="@drawable/photolibrary"
+                android:layout_width="160dp"
+                android:layout_height="160dp" />
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/hspace" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,17 +78,22 @@
 
             <Button
                 android:id="@+id/pdflibrarybutton"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
                 android:layout_weight="1"
-                android:background="@drawable/pdflibrary" />
+                android:background="@drawable/pdflibrary"
+                android:layout_width="160dp"
+                android:layout_height="160dp" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/doclibrarybutton"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
                 android:layout_weight="1"
-                android:background="@drawable/doclibrary" />
+                android:background="@drawable/doclibrary"
+                android:layout_width="160dp"
+                android:layout_height="160dp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -6,4 +6,5 @@
     <string name="enter_name">Enter your name</string>
     <string name="enter_email">Enter your email address</string>
     <string name="view_contents">View contents</string>
+    <string name="scan">Scan</string>
 </resources>
