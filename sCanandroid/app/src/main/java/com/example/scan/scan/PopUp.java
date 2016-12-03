@@ -24,17 +24,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 /**
+ * The pop-up interface that appears on long-press.
  * Created by ayushranjan on 15/11/16.
  */
 
-public class PopUp extends Activity{
+public class PopUp extends Activity {
     final Context context = this;
-    final String SHARED_PREF_NAME = "generals_prefs";
-    final String EMAIL_KEY = "UserEmail";
-    final String KEY = "entered";
-    private String filepath = "MyFileStorage";
     public String myData = "";
     Date dateobj;
 
@@ -43,19 +39,22 @@ public class PopUp extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_layout);
 
-        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String addressEntered = preferences.getString(EMAIL_KEY, "default");
+        SharedPreferences preferences = context.getSharedPreferences(Prefs.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String addressEntered = preferences.getString(Prefs.KEY_EMAIL, "default");
 
-        String PhoneName = preferences.getString(KEY, "default");
-        PhoneName = PhoneName.toLowerCase();
-        if (PhoneName.contains(" "))
-            PhoneName = PhoneName.substring(0, PhoneName.indexOf(" ")); // trim to first name
-        PhoneName = PhoneName.substring(0, 1).toUpperCase() + PhoneName.substring(1, PhoneName.length());
-        final String finalPhoneName = PhoneName;
+        // possibly duplicate code
+        String shortName = preferences.getString(Prefs.KEY_NAME, "default");
+        if (shortName.contains(" "))
+            shortName = shortName.substring(0, shortName.indexOf(" ")); // trim to first name
+        shortName = shortName.substring(0, 1).toUpperCase() + shortName.substring(1, shortName.length());
+        final String finalShortName = shortName;
+
         final DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Intent intent = this.getIntent();
 
         final String name = intent.getExtras().getString("FileName");
+
+        String filepath = "MyFileStorage";
         final File attachmentExternal = new File(getExternalFilesDir(filepath), name);
         final File attachment = getApplicationContext().getFileStreamPath(name);
         try {
@@ -85,11 +84,11 @@ public class PopUp extends Activity{
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         getWindow().setLayout((int) (dm.widthPixels*0.4),(int) (dm.heightPixels*0.4));
 
-        Button bmailself = (Button) findViewById(R.id.selfMail);
-        Button bmailother = (Button) findViewById(R.id.otherMail);
-        Button bview = (Button) findViewById(R.id.viewContents);
+        Button bMailSelf = (Button) findViewById(R.id.selfMail);
+        Button bMailOther = (Button) findViewById(R.id.otherMail);
+        Button bView = (Button) findViewById(R.id.viewContents);
 
-        bview.setOnClickListener(new View.OnClickListener() {
+        bView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -121,7 +120,7 @@ public class PopUp extends Activity{
                 }
             }
         });
-        bmailself.setOnClickListener(new View.OnClickListener() {
+        bMailSelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dateobj = new Date();
@@ -141,14 +140,14 @@ public class PopUp extends Activity{
             }
         });
 
-        bmailother.setOnClickListener(new View.OnClickListener() {
+        bMailOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dateobj = new Date();
                 Intent email = new Intent(Intent.ACTION_SEND);
                 email.setType("text/Message");
                 email.putExtra(Intent.EXTRA_SUBJECT, "Text File from sCan");
-                email.putExtra(Intent.EXTRA_TEXT, "Hello!\n\n" + "Attached below is the text file named " + name +" sent from the sCan app in "+ finalPhoneName + "'s android phone on " + df.format(dateobj) + ".\n\nRegards,\nsCan Team");
+                email.putExtra(Intent.EXTRA_TEXT, "Hello!\n\n" + "Attached below is the text file named " + name +" sent from the sCan app in "+ finalShortName + "'s android phone on " + df.format(dateobj) + ".\n\nRegards,\nsCan Team");
 
                 if (!attachmentExternal.exists() || !attachmentExternal.canRead()) {
                     Toast.makeText(getApplicationContext(), "Attachment Error", Toast.LENGTH_SHORT).show();

@@ -15,14 +15,13 @@ public class ListFilesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // set up
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_files);
+
         final ListView lv = (android.widget.ListView) findViewById(R.id.listFiles);
         final ArrayAdapter<String> arrayAdapter;
         assert lv != null;
 
-        // get file list
         String[] list = fileList();
         ArrayList<String> resultList = new ArrayList<>();
         if (list != null) {
@@ -46,12 +45,13 @@ public class ListFilesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = (String) (parent.getItemAtPosition(position));
-                Intent intentPop = new Intent(ListFilesActivity.this,PopUp.class);
+                Intent intentPop = new Intent(ListFilesActivity.this, PopUp.class);
                 intentPop.putExtra("FileName", name);
                 startActivity(intentPop);
             }
         });
 
+        // we should change this to a pop-up menu
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position,

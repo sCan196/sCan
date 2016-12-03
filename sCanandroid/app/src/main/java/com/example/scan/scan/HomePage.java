@@ -32,12 +32,14 @@ public class HomePage extends AppCompatActivity {
     private static final int
             PICK_IMAGE = 420, CAPTURE_IMAGE = 666;
 
+    private static final int
+            SAMPLE_HEIGHT = 1920, SAMPLE_WIDTH = (SAMPLE_HEIGHT >> 2) * 3; // * 3/4
+
     private static final String
             store = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
 
+    /** If you put in excessively long names the UI on the home screen will flow oddly */
     private static final int MAX_NAME_CHARS = 11;
-
-    private String textFileName = "";
 
     Button btnScan;
     Button btnPicLib;
@@ -51,7 +53,6 @@ public class HomePage extends AppCompatActivity {
 
         // let's greet people nicely
         String s = intent.getStringExtra("username");
-        s = s.toLowerCase();
         if (s.contains(" "))
             s = s.substring(0, s.indexOf(" ")); // trim to first name
         s = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
@@ -112,7 +113,7 @@ public class HomePage extends AppCompatActivity {
         // IF PHOTO IS TAKEN USING CAMERA
         if (requestCode == CAPTURE_IMAGE) {
             try {
-                imageBitmap = decodeSampledBitmapFromFile(store, 1024, 768);
+                imageBitmap = decodeSampledBitmapFromFile(store, SAMPLE_HEIGHT, SAMPLE_WIDTH);
             } catch (Exception e) { // this should never happen
                 Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
@@ -126,7 +127,7 @@ public class HomePage extends AppCompatActivity {
 
             // primary method
             try {
-                imageBitmap = decodeUri(imageUri, 1024, 768);
+                imageBitmap = decodeUri(imageUri, SAMPLE_HEIGHT, SAMPLE_WIDTH);
             } catch (Exception e) { // this should never happen
                 Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
@@ -185,21 +186,25 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // save plz
-                textFileName = input.getText().toString();
+                for (int i = 0; i < 100; i++) {
+                String textFileName = input.getText().toString();
                 if (textFileName.equals("")) {
                     // random values
                     textFileName = "sCan-" + (int) (Math.random() * 0x66600000);
                 }
 
+                if (!textFileName.endsWith(".txt"))
+                    textFileName = textFileName + ".txt";
+
                 try {
-                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName + ".txt", 0));
+                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName, 0));
                     out.write(result);
                     out.close();
-                    Toast.makeText(getApplicationContext(), "Saved text to " + textFileName + ".txt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Saved text to " + textFileName, Toast.LENGTH_SHORT).show();
                 } catch (Throwable t) {
                     Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                     t.printStackTrace();
-                }
+                }}
             }
         });
 

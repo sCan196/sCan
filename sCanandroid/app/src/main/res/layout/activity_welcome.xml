@@ -27,7 +27,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:hint="Enter Your Name"
+        android:hint="@string/enter_name"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:maxLines="1"
@@ -35,7 +35,8 @@
         android:id="@+id/username"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:inputType="textPersonName" />
 
     <Space
         android:layout_width="match_parent"
@@ -43,15 +44,16 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:hint="Enter Your Email Address"
+        android:hint="@string/enter_email"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:maxLines="1"
         android:singleLine="true"
-        android:id="@+id/emailaddress"
+        android:id="@+id/useremail"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:inputType="textWebEmailAddress" />
 
     <Space
         android:layout_width="match_parent"
