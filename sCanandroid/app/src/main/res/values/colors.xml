@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4F61D0</color>
+    <color name="colorPrimary">#BDBDBD</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="richBlack">#00171F</color>
+    <color name="prussianBlue">#003459</color>
+    <color name="cerulean">#007EA7</color>
+    <color name="vividCerulean">#00a8e8</color>
 </resources>
