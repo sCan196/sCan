@@ -5,16 +5,25 @@
     android:id="@+id/activity_list_files"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/prussianBlue"
     tools:context="com.example.scan.scan.ListFilesActivity"
     android:orientation="vertical">
 
-    <ListView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        android:text="My Documents"
+        android:fontFamily="sans-serif-condensed"
+        android:padding="10dp"
+        android:background="@color/prussianBlue"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:id="@+id/listFiles" />
+
 
 </LinearLayout>

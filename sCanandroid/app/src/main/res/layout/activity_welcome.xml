@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="@drawable/background"
+    android:background="@color/prussianBlue"
     tools:context="com.example.scan.scan.WelcomePage"
     android:padding="32dp">
 
@@ -17,8 +17,9 @@
         android:layout_height="wrap_content"
         android:text="Welcome to sCan!"
         android:layout_gravity="center_horizontal"
+        android:fontFamily="sans-serif-condensed"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="35dp" />
 
     <Space
@@ -28,15 +29,15 @@
     <EditText
         android:layout_width="match_parent"
         android:hint="@string/enter_name"
-        android:textColorHint="#999999"
+        android:textColorHint="#BDBDBD"
         android:textColor="#FFFFFF"
         android:maxLines="1"
-        android:singleLine="true"
         android:id="@+id/username"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:backgroundTint="@color/vividCerulean"/>
 
     <Space
         android:layout_width="match_parent"
@@ -45,15 +46,15 @@
     <EditText
         android:layout_width="match_parent"
         android:hint="@string/enter_email"
-        android:textColorHint="#999999"
-        android:textColor="#FFFFFF"
+        android:textColorHint="#BDBDBD"
+        android:textColor="@color/white"
         android:maxLines="1"
-        android:singleLine="true"
         android:id="@+id/useremail"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:inputType="textWebEmailAddress" />
+        android:inputType="textWebEmailAddress"
+        android:backgroundTint="@color/vividCerulean"/>
 
     <Space
         android:layout_width="match_parent"
@@ -63,7 +64,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/vividCerulean"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/white"
         android:text="Enter"
         android:onClick="sign_in"
-        android:id="@+id/signinbutton"/>
+        android:id="@+id/signinbutton" />
 </LinearLayout>
