@@ -1,24 +1,37 @@
 package com.example.scan.scan;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -27,20 +40,22 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
-
-public class HomePage extends AppCompatActivity {
+public class HomePage extends Activity {
     private static final int
             PICK_IMAGE = 420, CAPTURE_IMAGE = 666;
 
     private static final int
             SAMPLE_HEIGHT = 1920, SAMPLE_WIDTH = (SAMPLE_HEIGHT >> 2) * 3; // * 3/4
 
-    private static final String
-            store = Environment.getExternalStorageDirectory() + File.separator + "image.jpg";
+    public static final String MIME_TYPE_CONTACT = "vnd.android.cursor.item/vnd.example.contact";
 
     /** If you put in excessively long names the UI on the home screen will flow oddly */
     private static final int MAX_NAME_CHARS = 11;
+    private final String TAG = "emilio";        // Don't hate. Appreciate.
 
+
+    File photoFile;
+    String mCurrentPhotoPath;
     Button btnScan;
     Button btnPicLib;
     Button btnDocList;
@@ -67,11 +82,35 @@ public class HomePage extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                File file = new File(store);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(intent, CAPTURE_IMAGE);
-            }
+                Context context = getApplicationContext();
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e){}
+
+                if (photoFile != null){
+                    Uri contentUri = FileProvider.getUriForFile(context,
+                            "com.example.scan.scan.fileprovider", photoFile);
+                    context.grantUriPermission("com.example.scan.scan",
+                            contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.grantUriPermission("com.example.scan.scan",
+                            contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    setResult(CAPTURE_IMAGE, intent);
+                    startActivityForResult(intent, CAPTURE_IMAGE);
+
+                }
+                Log.e(TAG, "workin so far");
+
+
+
+        }
+
+
+
         });
 
         // document list button shows everything
@@ -103,6 +142,8 @@ public class HomePage extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+
         if (resultCode != RESULT_OK) {
             Toast.makeText(getApplicationContext(), R.string.cancel, Toast.LENGTH_SHORT).show();
             return;
@@ -112,13 +153,7 @@ public class HomePage extends AppCompatActivity {
 
         // IF PHOTO IS TAKEN USING CAMERA
         if (requestCode == CAPTURE_IMAGE) {
-            try {
-                imageBitmap = decodeSampledBitmapFromFile(store, SAMPLE_HEIGHT, SAMPLE_WIDTH);
-            } catch (Exception e) { // this should never happen
-                Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-                return;
-            }
+            imageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
         }
 
         // IF PICTURE IS TAKEN FROM PHOTO LIBRARY
@@ -265,5 +300,26 @@ public class HomePage extends AppCompatActivity {
         BitmapFactory.decodeFile(path, options);
         setToDecodeFromBitmapOptions(options, minHeight, minWidth);
         return BitmapFactory.decodeFile(path, options);
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        Log.e(TAG, "External");
+        Log.e(TAG, storageDir.getAbsolutePath());
+        if(!storageDir.exists()) storageDir.mkdir();
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        Log.e(TAG, mCurrentPhotoPath);
+        return image;
     }
 }
