@@ -104,9 +104,6 @@ public class HomePage extends Activity {
 
                 }
                 Log.e(TAG, "workin so far");
-
-
-
         }
 
 
@@ -221,7 +218,6 @@ public class HomePage extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // save plz
-                for (int i = 0; i < 100; i++) {
                 String textFileName = input.getText().toString();
                 if (textFileName.equals("")) {
                     // random values
@@ -230,7 +226,6 @@ public class HomePage extends Activity {
 
                 if (!textFileName.endsWith(".txt"))
                     textFileName = textFileName + ".txt";
-
                 try {
                     OutputStreamWriter out = new OutputStreamWriter(openFileOutput(textFileName, 0));
                     out.write(result);
@@ -239,7 +234,7 @@ public class HomePage extends Activity {
                 } catch (Throwable t) {
                     Toast.makeText(getApplicationContext(), R.string.except_other, Toast.LENGTH_LONG).show();
                     t.printStackTrace();
-                }}
+                }
             }
         });
 

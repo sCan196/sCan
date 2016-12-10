@@ -22,13 +22,13 @@
         android:layout_margin="10dp">
     </TextView>
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/activity_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:columnCount="2"
-        android:rowCount="2">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <Button
             android:id="@+id/scanbutton"
@@ -36,8 +36,7 @@
             android:layout_height="200dp"
             android:layout_margin="10dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/cerulean"
-            android:layout_gravity="right|top"
+            android:backgroundTint="@color/vividCerulean"
             android:textColor="@color/white"
             android:text="Scan new from Camera"
             android:gravity="center_horizontal|bottom"
@@ -46,7 +45,8 @@
             android:textAllCaps="false"
             android:paddingBottom="30dp"
             android:paddingTop="30dp"
-            android:drawableTop="@drawable/sc"/>
+            android:drawableTop="@drawable/sc"
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/photolibrarybutton"
@@ -63,25 +63,15 @@
             android:gravity="center_horizontal|bottom"
             android:textSize="20sp"
             android:textAllCaps="false"
-            android:fontFamily="sans-serif-condensed"/>
-
-        <Button
-            android:id="@+id/pdflibrarybutton"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/vividCerulean"
-            android:drawableTop="@drawable/pdf"
-            android:text="Import PDF"
-            android:gravity="center_horizontal|bottom"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
             android:fontFamily="sans-serif-condensed"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp" />
-
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
         <Button
             android:id="@+id/doclibrarybutton"
             android:layout_width="150dp"
@@ -93,13 +83,10 @@
             android:textColor="@color/white"
             android:drawableTop="@drawable/doclib"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/cerulean"
-            android:layout_gravity="left|top"
+            android:backgroundTint="@color/vividCerulean"
             android:text="View all Documents"
-            android:gravity="center_horizontal|bottom"
             android:textSize="20sp"
             android:textAllCaps="false"
             android:fontFamily="sans-serif-condensed"/>
-
-    </GridLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.scan.scan;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListFilesActivity extends AppCompatActivity {
+public class ListFilesActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,6 @@ public class ListFilesActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 resultList);
         lv.setAdapter(arrayAdapter);
-
-        // chaining stuff is fun.
-        final AppCompatActivity thisActivity = this;
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
