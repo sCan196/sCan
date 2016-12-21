@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.scan.scan">
+    package="com.cs196.scan.scan">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
@@ -19,22 +19,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomePage">
+        <activity android:name="com.cs196.scan.scan.WelcomePage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomePage" />
-        <activity android:name=".DisplayText" />
-        <activity android:name=".ListFilesActivity" />
-        <activity android:name=".PopUp"
+        <activity android:name="com.cs196.scan.scan.HomePage"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.cs196.scan.scan.DisplayText" />
+        <activity android:name="com.cs196.scan.scan.ListFilesActivity" />
+        <activity android:name="com.cs196.scan.scan.PopUp"
             android:theme="@style/AppTheme.CustomPop"
             ></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.scan.scan.fileprovider"
+            android:authorities="com.cs196.scan.scan.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

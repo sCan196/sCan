@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:background="@color/prussianBlue"
-    tools:context="com.example.scan.scan.WelcomePage"
+    tools:context="com.cs196.scan.scan.WelcomePage"
     android:padding="32dp">
 
     <TextView

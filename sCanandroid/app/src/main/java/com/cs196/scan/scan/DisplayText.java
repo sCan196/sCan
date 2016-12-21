@@ -1,15 +1,13 @@
-package com.example.scan.scan;
+package com.cs196.scan.scan;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.OutputStreamWriter;
 
-public class DisplayText extends AppCompatActivity {
+public class DisplayText extends Activity {
 
     /*
     This is just a text view for displaying... well... text.

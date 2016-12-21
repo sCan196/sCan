@@ -1,4 +1,4 @@
-package com.example.scan.scan;
+package com.cs196.scan.scan;
 
 import org.junit.Test;
 

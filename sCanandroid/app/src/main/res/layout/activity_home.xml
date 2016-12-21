@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/prussianBlue"
     android:orientation="vertical"
-    tools:context="com.example.scan.scan.HomePage">
+    tools:context="com.cs196.scan.scan.HomePage">
 
     <TextView
         android:id="@+id/showuser"
