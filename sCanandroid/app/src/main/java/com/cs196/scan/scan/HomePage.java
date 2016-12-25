@@ -12,7 +12,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,10 +80,10 @@ public class HomePage extends Activity {
 
                 if (photoFile != null){
                     Uri contentUri = FileProvider.getUriForFile(context,
-                            "com.example.scan.scan.fileprovider", photoFile);
-                    context.grantUriPermission("com.example.scan.scan",
+                            "com.cs196.scan.scan.fileprovider", photoFile);
+                    context.grantUriPermission("com.cs196.scan.scan",
                             contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    context.grantUriPermission("com.example.scan.scan",
+                    context.grantUriPermission("com.cs196.scan.scan",
                             contentUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                     Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -95,7 +94,6 @@ public class HomePage extends Activity {
                     startActivityForResult(intent, CAPTURE_IMAGE);
 
                 }
-                Log.e(TAG, "workin so far");
         }
 
 
@@ -295,8 +293,6 @@ public class HomePage extends Activity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        Log.e(TAG, "External");
-        Log.e(TAG, storageDir.getAbsolutePath());
         if(!storageDir.exists()) storageDir.mkdir();
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -306,7 +302,6 @@ public class HomePage extends Activity {
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
-        Log.e(TAG, mCurrentPhotoPath);
         return image;
     }
 }
